@@ -5,89 +5,14 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Star, Moon, Sun, Sparkles, Menu } from "lucide-react"
+import NavBar from "@/components/nav"
+import Footer from "@/components/footer"
 
 export default function HomePage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900">
       {/* Navigation */}
-      <nav className="border-b border-purple-800/30 bg-black/20 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Moon className="h-8 w-8 text-purple-300" />
-              <span className="text-xl font-bold text-white">Mystic Readings</span>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-white font-semibold">
-                Home
-              </Link>
-              <Link href="/about" className="text-purple-200 hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="/services" className="text-purple-200 hover:text-white transition-colors">
-                Services
-              </Link>
-              <Link href="/book-session">
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Book Session
-                </Button>
-              </Link>
-            </div>
-
-            {/* Mobile Navigation Button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-purple-800/30"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-purple-800/30">
-              <div className="flex flex-col space-y-3 pt-4">
-                <Link href="/" className="text-white font-semibold px-2 py-1" onClick={() => setMobileMenuOpen(false)}>
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/services"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/free-consultation"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Free Reading
-                </Link>
-                <Link href="/book-session" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full mt-2">
-                    Book Session
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <NavBar />
 
       {/* Hero Section */}
       <section className="py-20 px-4">
@@ -132,7 +57,7 @@ export default function HomePage() {
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center text-white mb-12">Sacred Services</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 border-purple-600/30 backdrop-blur-sm">
+            <Card className="bg-gradient-to-br from-purple-800/70 to-indigo-800/80 border-purple-600/30 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center space-x-3">
                   <Moon className="h-8 w-8 text-purple-300" />
@@ -156,7 +81,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-indigo-800/50 to-purple-800/50 border-purple-600/30 backdrop-blur-sm">
+            <Card className="bg-gradient-to-br from-indigo-800/70 to-purple-800/80 border-purple-600/30 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center space-x-3">
                   <Sun className="h-8 w-8 text-yellow-400" />
@@ -184,7 +109,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-purple-800/30 to-pink-800/30">
+      <section className="py-16 px-4 bg-gradient-to-b from-indigo-900 to-pink-800/30">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Begin Your Journey?</h2>
           <p className="text-purple-200 mb-8 max-w-2xl mx-auto">
@@ -202,17 +127,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/40 border-t border-purple-800/30 py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Moon className="h-6 w-6 text-purple-300" />
-            <span className="text-xl font-bold text-white">Mystic Readings</span>
-          </div>
-          <p className="text-purple-300 text-sm">
-            © 2024 Mystic Readings. All rights reserved. | Illuminating paths since 2020
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

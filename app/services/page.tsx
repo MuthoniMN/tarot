@@ -1,15 +1,13 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Moon, Sun, Heart, Briefcase, Star, Clock, Users, Menu } from "lucide-react"
+import NavBar from "@/components/nav"
 
 export default function ServicesPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
   const services = [
     {
       icon: <Moon className="h-8 w-8 text-purple-300" />,
@@ -106,87 +104,7 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900">
       {/* Navigation */}
-      <nav className="border-b border-purple-800/30 bg-black/20 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Moon className="h-8 w-8 text-purple-300" />
-              <span className="text-xl font-bold text-white">Mystic Readings</span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-purple-200 hover:text-white transition-colors">
-                Home
-              </Link>
-              <Link href="/about" className="text-purple-200 hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="/services" className="text-white font-semibold">
-                Services
-              </Link>
-              <Link href="/book-session">
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Book Session
-                </Button>
-              </Link>
-            </div>
-
-            {/* Mobile Navigation Button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-purple-800/30"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-purple-800/30">
-              <div className="flex flex-col space-y-3 pt-4">
-                <Link
-                  href="/"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/services"
-                  className="text-white font-semibold px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/free-consultation"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Free Reading
-                </Link>
-                <Link href="/book-session" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full mt-2">
-                    Book Session
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <NavBar />
 
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
@@ -201,11 +119,11 @@ export default function ServicesPage() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 mb-16">
           {services.map((service, index) => (
             <Card
               key={index}
-              className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 border-purple-600/30 backdrop-blur-sm relative overflow-hidden"
+              className="bg-gradient-to-br from-purple-800/70 to-indigo-800/80 border-purple-600/30 backdrop-blur-sm relative overflow-hidden"
             >
               {service.popular && (
                 <Badge className="absolute top-4 right-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-semibold">
@@ -294,41 +212,7 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        {/* FAQ */}
-        <div className="max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {[
-              {
-                question: "How do online readings work?",
-                answer:
-                  "We connect via video call (Zoom, Skype, or phone) at your scheduled time. I'll guide you through the process and share my screen to show your cards or chart as we explore your reading together.",
-              },
-              {
-                question: "What information do you need for a birth chart?",
-                answer:
-                  "I need your exact birth date, time (as precise as possible), and location (city/state/country). If you don't know your birth time, we can still do a reading with some limitations.",
-              },
-              {
-                question: "How should I prepare for my reading?",
-                answer:
-                  "Come with an open mind and specific questions you'd like guidance on. Find a quiet, private space where you won't be interrupted. Have a notebook ready to jot down insights.",
-              },
-              {
-                question: "Do you record sessions?",
-                answer:
-                  "Yes! All sessions are recorded (with your permission) and sent to you within 24 hours so you can revisit the guidance whenever you need it.",
-              },
-            ].map((faq, index) => (
-              <Card key={index} className="bg-gradient-to-br from-purple-800/30 to-indigo-800/30 border-purple-600/20">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">{faq.question}</h3>
-                  <p className="text-purple-100">{faq.answer}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+
 
         {/* CTA */}
         <div className="text-center">
@@ -343,7 +227,7 @@ export default function ServicesPage() {
                 variant="outline"
                 className="border-purple-400 text-purple-200 hover:bg-purple-800/30 text-lg px-8 py-3 bg-transparent"
               >
-                Free Consultation First
+                Free Consultation
               </Button>
             </Link>
             <Link href="/book-session">

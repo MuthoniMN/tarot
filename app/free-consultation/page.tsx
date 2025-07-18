@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Moon, Star, Heart, Sparkles, Menu } from "lucide-react"
+import NavBar from "@/components/nav"
 
 export default function FreeConsultationPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -89,90 +90,7 @@ export default function FreeConsultationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900">
       {/* Navigation */}
-      <nav className="border-b border-purple-800/30 bg-black/20 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Moon className="h-8 w-8 text-purple-300" />
-              <span className="text-2xl font-bold text-white">Mystic Readings</span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-purple-200 hover:text-white transition-colors">
-                Home
-              </Link>
-              <Link href="/about" className="text-purple-200 hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="/services" className="text-purple-200 hover:text-white transition-colors">
-                Services
-              </Link>
-              <Link href="/free-consultation" className="text-white font-semibold">
-                Free Reading
-              </Link>
-              <Link href="/book-session">
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Book Session
-                </Button>
-              </Link>
-            </div>
-
-            {/* Mobile Navigation Button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-purple-800/30"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-purple-800/30">
-              <div className="flex flex-col space-y-3 pt-4">
-                <Link
-                  href="/"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/services"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/free-consultation"
-                  className="text-white font-semibold px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Free Reading
-                </Link>
-                <Link href="/book-session" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full mt-2">
-                    Book Session
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <NavBar />
 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto">
@@ -200,7 +118,7 @@ export default function FreeConsultationPage() {
           </div>
 
           {/* Form */}
-          <Card className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 border-purple-600/30 backdrop-blur-sm">
+          <Card className="bg-gradient-to-br from-purple-800/80 to-indigo-800 border-purple-600/30 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-2xl text-white">Tell Me About Yourself</CardTitle>
               <CardDescription className="text-purple-200">

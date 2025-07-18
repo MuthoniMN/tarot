@@ -10,10 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
-import { Moon, CreditCard, Calendar, Clock, Menu } from "lucide-react"
+import { CreditCard, Calendar, Clock } from "lucide-react"
+import NavBar from "@/components/nav"
 
 export default function BookSessionPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [step, setStep] = useState(1)
   const [bookingData, setBookingData] = useState({
     service: "",
@@ -71,87 +71,7 @@ export default function BookSessionPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-slate-900">
       {/* Navigation */}
-      <nav className="border-b border-purple-800/30 bg-black/20 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Moon className="h-8 w-8 text-purple-300" />
-              <span className="text-2xl font-bold text-white">Mystic Readings</span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/" className="text-purple-200 hover:text-white transition-colors">
-                Home
-              </Link>
-              <Link href="/about" className="text-purple-200 hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="/services" className="text-purple-200 hover:text-white transition-colors">
-                Services
-              </Link>
-              <Link href="/book-session" className="text-white font-semibold">
-                Book Session
-              </Link>
-            </div>
-
-            {/* Mobile Navigation Button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-purple-800/30"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-purple-800/30">
-              <div className="flex flex-col space-y-3 pt-4">
-                <Link
-                  href="/"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/services"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link
-                  href="/free-consultation"
-                  className="text-purple-200 hover:text-white transition-colors px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Free Reading
-                </Link>
-                <Link
-                  href="/book-session"
-                  className="text-white font-semibold px-2 py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Book Session
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <NavBar />
 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto">
@@ -170,8 +90,8 @@ export default function BookSessionPage() {
                 <div key={stepNum} className="flex items-center">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${step >= stepNum
-                        ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                        : "bg-purple-800/50 text-purple-300"
+                      ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
+                      : "bg-purple-800/50 text-purple-300"
                       }`}
                   >
                     {stepNum}
@@ -187,7 +107,7 @@ export default function BookSessionPage() {
             </div>
           </div>
 
-          <Card className="bg-gradient-to-br from-purple-800/50 to-indigo-800/50 border-purple-600/30 backdrop-blur-sm">
+          <Card className="bg-gradient-to-br from-purple-800/70 to-indigo-800 border-purple-600/30 backdrop-blur-sm">
             {/* Step 1: Service Selection */}
             {step === 1 && (
               <>
@@ -202,8 +122,8 @@ export default function BookSessionPage() {
                     <div
                       key={service.id}
                       className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${bookingData.service === service.id
-                          ? "border-purple-400 bg-purple-700/30"
-                          : "border-purple-600/30 bg-purple-800/20 hover:border-purple-500/50"
+                        ? "border-purple-400 bg-purple-700/30"
+                        : "border-purple-600/30 bg-purple-800/20 hover:border-purple-500/50"
                         }`}
                       onClick={() => handleInputChange("service", service.id)}
                     >
