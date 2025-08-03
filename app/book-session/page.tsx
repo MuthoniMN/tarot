@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +29,17 @@ export default function BookSessionPage() {
     questions: "",
     terms: false,
   })
+
+  useEffect(() => {
+    // Dynamically load PayStack inline script
+    const script = document.createElement("script")
+    script.src = "https://js.paystack.co/v1/inline.js"
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const services = [
     { id: "tarot", name: "Tarot Card Reading", price: 75, duration: "45-60 min" },
@@ -401,53 +412,77 @@ export default function BookSessionPage() {
                         <span className="text-2xl font-bold">${selectedService?.price}</span>
                       </div>
                       <p className="text-purple-200 text-sm mt-2">
-                        Secure payment processed via Stripe. Your session will be confirmed upon payment.
+                        Secure payment processed via PayStack. Your session will be confirmed upon payment.
                       </p>
                     </div>
 
-                    {/* Stripe Payment Form would go here */}
-                    <Card className="bg-gradient-to-br from-purple-700/30 to-indigo-700/30 border-purple-500/30">
-                      <CardHeader>
-                        <CardTitle className="text-lg text-white">Secure Payment</CardTitle>
-                        <CardDescription className="text-purple-200">
-                          Complete your booking with secure credit card payment
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label className="text-purple-200">Card Number</Label>
-                            <Input
-                              placeholder="1234 5678 9012 3456"
-                              className="bg-purple-900/30 border-purple-600/50 text-white placeholder:text-purple-300"
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label className="text-purple-200">Expiry Date</Label>
-                              <Input
-                                placeholder="MM/YY"
-                                className="bg-purple-900/30 border-purple-600/50 text-white placeholder:text-purple-300"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label className="text-purple-200">CVC</Label>
-                              <Input
-                                placeholder="123"
-                                className="bg-purple-900/30 border-purple-600/50 text-white placeholder:text-purple-300"
-                              />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <Label className="text-purple-200">Cardholder Name</Label>
-                            <Input
-                              placeholder="Name on card"
-                              className="bg-purple-900/30 border-purple-600/50 text-white placeholder:text-purple-300"
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    {/* PayStack Payment Button */}
+                    <Button
+                      onClick={() => {
+                        if (!selectedService || !bookingData.email) {
+                          alert("Please select a service and enter your email before proceeding to payment.");
+                          return;
+                        }
+                        const handler = (window as any).PaystackPop.setup({
+                          key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+                          email: bookingData.email,
+                          amount: Math.round(selectedService.price * 140), // convert USD to KSH approx
+                          currency: "KES",
+                          ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+                          metadata: {
+                            custom_fields: [
+                              {
+                                display_name: "First Name",
+                                variable_name: "first_name",
+                                value: bookingData.firstName,
+                              },
+                              {
+                                display_name: "Last Name",
+                                variable_name: "last_name",
+                                value: bookingData.lastName,
+                              },
+                              {
+                                display_name: "Phone Number",
+                                variable_name: "phone_number",
+                                value: bookingData.phone,
+                              },
+                            ],
+                          },
+                          callback: function (response: any) {
+                            (async () => {
+                              try {
+                                const res = await fetch("/api/paystack/verify", {
+                                  method: "POST",
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                  },
+                                  body: JSON.stringify({
+                                    reference: response.reference,
+                                    bookingData,
+                                  }),
+                                });
+                                const data = await res.json();
+                                if (data.success) {
+                                  alert("Payment verified and booking confirmed!");
+                                  // Optionally reset form or navigate
+                                } else {
+                                  alert("Payment verification failed: " + data.message);
+                                }
+                              } catch (error) {
+                                alert("Error verifying payment: " + error);
+                              }
+                            })();
+                          },
+                          onClose: function () {
+                            alert("Payment window closed.");
+                          },
+                        });
+                        handler.openIframe();
+                      }}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full text-white"
+                    >
+                      Pay with PayStack - ${selectedService?.price}
+                    </Button>
                   </div>
 
                   {/* Terms */}

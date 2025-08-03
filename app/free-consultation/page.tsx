@@ -14,6 +14,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Moon, Star, Heart, Sparkles, Menu } from "lucide-react"
 import NavBar from "@/components/nav"
 
+import { generateFreeReading } from "@/lib/genAiFreeReading"
+
 export default function FreeConsultationPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [formData, setFormData] = useState({
@@ -33,11 +35,37 @@ export default function FreeConsultationPage() {
 
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [generatedReading, setGeneratedReading] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", formData)
-    setIsSubmitted(true)
+    setIsLoading(true)
+    setError(null)
+    try {
+      // Send form data to backend API to generate reading and send emails
+      const response = await fetch("/api/free-consultation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form")
+      }
+
+      const result = await response.json()
+      setGeneratedReading(result.generatedReading)
+      setIsSubmitted(true)
+    } catch (err) {
+      console.error(err)
+      setError("Failed to generate reading. Please try again later.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -55,24 +83,45 @@ export default function FreeConsultationPage() {
                 <Sparkles className="h-8 w-8 text-purple-300 absolute -top-2 -right-2 animate-bounce" />
               </div>
             </div>
-            <CardTitle className="text-2xl text-white">Thank You!</CardTitle>
+            <CardTitle className="text-2xl text-white">Your Free Reading</CardTitle>
             <CardDescription className="text-purple-200">
-              Your free consultation request has been received
+              Here is your personalized free reading based on your question:
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center space-y-4">
-            <p className="text-purple-100">
-              I'll review your information and reach out within 24 hours to schedule your complimentary 15-minute
-              consultation.
-            </p>
-            <p className="text-purple-200 text-sm">Check your email for confirmation and next steps.</p>
+            {isLoading ? (
+              <p className="text-purple-100">Generating your reading, please wait...</p>
+            ) : error ? (
+              <p className="text-red-400">{error}</p>
+            ) : (
+              <p className="text-purple-100 whitespace-pre-wrap">{generatedReading}</p>
+            )}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Link href="/" className="flex-1">
                 <Button
                   variant="outline"
                   className="w-full border-purple-400 text-purple-200 hover:bg-purple-800/30 bg-transparent"
+                  onClick={() => {
+                    setIsSubmitted(false)
+                    setGeneratedReading(null)
+                    setFormData({
+                      firstName: "",
+                      lastName: "",
+                      email: "",
+                      phone: "",
+                      birthDate: "",
+                      birthTime: "",
+                      birthLocation: "",
+                      readingType: "",
+                      questions: "",
+                      experience: "",
+                      newsletter: false,
+                      terms: false,
+                    })
+                    setError(null)
+                  }}
                 >
-                  Return Home
+                  New Reading
                 </Button>
               </Link>
               <Link href="/services" className="flex-1">
